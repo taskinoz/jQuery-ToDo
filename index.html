@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <style>
+    html,
+    body{
+      border: 0;
+      margin:0;
+      padding:0;
+    }
+    body{
+      text-align: center;
+      background: #eee;
+    }
+    .container{
+      width: 40%;
+      display: inline-block;
+      padding: 20px;
+      margin: 20px;
+      text-align: left;
+      background: #fff;
+      box-shadow: 0 0 4px 2px #ccc;
+      font-family: Arial;
+    }
+    h1{
+      text-align: center;
+      font-size: 40px;
+      text-transform: uppercase;
+    }
+    .todo{
+      font-size: 30px;
+      padding: 0 10px;
+    }
+    .todo .list-item{
+      list-style: circle;
+      display: list-item;
+      margin-left: 20px;
+      padding: 5px 10px;
+    }
+    .list-item:nth-child(even){
+      background: #eee;
+    }
+    .list-item .close{
+      float: right;
+    }
+    .list-item .close i{
+      transition: 0.3s;
+    }
+    .list-item .close i:hover{
+      color: red;
+    }
+    .todo:empty::before{
+      content: "You're list is empty";
+      color: #000;
+      font-size: 20px;
+      text-align: center;
+      display: inline-block;
+      width: 100%;
+      padding: 50px 0;
+    }
+    input{
+      width: 100%;
+      margin: 10px 0;
+    }
+    input[type=text]{
+      background: none;
+      border: 0;
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+      width: calc(100% - 10px * 2);
+    }
+    input[type=button]{
+      background: #75b7ef;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 20px;
+      border: 0;
+      text-align: center;
+    }
+    .close{
+      display: inline-block;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      var storage = false;
+      if (typeof(Storage) !== "undefined") {
+        if (typeof localStorage.list!=undefined){
+          list = JSON.parse(localStorage.getItem("list"));
+        }
+        else{
+          var list = {};
+        }
+        storage = true;
+      } else {
+        // No Local Storage
+        var list = {};
+      }
+      function randChar(s) {
+        e="";
+        for (var i = 0; i < s; i++) {
+          e+=String.fromCharCode(65 + Math.floor(Math.random() * 26));
+        }
+        return e;
+      }
+      $('#add').on('click', function(){
+        i=$('#item').val();
+        if (i!="") {
+          uniqid = Date.now();
+          id=(uniqid/1231).toString().split(".")[1]+randChar(4);
+          list[id]=i;
+          if (storage) {localStorage.setItem("list",JSON.stringify(list));}
+          $('#item').val("");
+          $('.todo').append(
+            '<div class="list-item" data-postid="'+id+'">'+i+
+            ' <div class="close"><i class="fas fa-times"></i></div></div>'
+          );
+        }
+        else {
+          $('#item').focus();
+        }
+      });
+
+      $(document).on('click','.close',function () {
+        //console.log("test");
+        delete list[$(this).closest('.list-item').attr('data-postid')];
+        if (storage) {localStorage.setItem("list",JSON.stringify(list));}
+        $(this).closest(".list-item").remove();
+      })
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Todo</h1>
+    <div class="todo"></div>
+    <div class="add">
+      <input id="item" type="text" name="item">
+      <input id="add" type="button" value="Add">
+    </div>
+  </div>
+</body>
+</html>
