@@ -91,8 +91,11 @@
     $(document).ready(function(){
       var storage = false;
       if (typeof(Storage) !== "undefined") {
-        if (typeof localStorage.list!=undefined){
+        if (localStorage.list!=undefined){
           list = JSON.parse(localStorage.getItem("list"));
+          for (var i = 0; i < Object.keys(list).length; i++) {
+            Object.keys(test)[i]
+          }
         }
         else{
           var list = {};
