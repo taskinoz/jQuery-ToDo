@@ -12,13 +12,14 @@
       border: 0;
       margin:0;
       padding:0;
+      height: 100%;
     }
     body{
       text-align: center;
       background: #eee;
     }
     .container{
-      width: 40%;
+      width: calc(1920px * 0.5);
       display: inline-block;
       padding: 20px;
       margin: 20px;
@@ -26,6 +27,21 @@
       background: #fff;
       box-shadow: 0 0 4px 2px #ccc;
       font-family: Arial;
+    }
+    @media screen and (max-width:1200px) {
+      .container{
+        width: calc(1200px * 0.5);
+      }
+    }
+    @media screen and (max-width:900px) {
+      .container{
+        width: calc(100% - 20px * 2);
+        margin: 0;
+        box-shadow: none;
+      }
+      body{
+        background: #fff;
+      }
     }
     h1{
       text-align: center;
@@ -75,6 +91,7 @@
       width: calc(100% - 10px * 2);
     }
     input[type=button]{
+      color: #fff;
       background: #75b7ef;
       padding: 10px 20px;
       border-radius: 5px;
@@ -94,7 +111,11 @@
         if (localStorage.list!=undefined){
           list = JSON.parse(localStorage.getItem("list"));
           for (var i = 0; i < Object.keys(list).length; i++) {
-            Object.keys(test)[i]
+            Object.keys(list)[i]
+            $('.todo').append(
+              '<div class="list-item" data-postid="'+Object.keys(list)[i]+'">'+list[(Object.keys(list)[i])]+
+              ' <div class="close"><i class="fas fa-times"></i></div></div>'
+            );
           }
         }
         else{
@@ -127,6 +148,11 @@
         }
         else {
           $('#item').focus();
+        }
+      });
+      $('#item').keypress('',function(event) {
+        if (event.keyCode === 13) {
+          $('#add').click();
         }
       });
 
