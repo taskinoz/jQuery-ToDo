@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>ToDo List</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <style>
     html,
@@ -110,6 +110,9 @@
       if (typeof(Storage) !== "undefined") {
         if (localStorage.list!=undefined){
           list = JSON.parse(localStorage.getItem("list"));
+          if (Object.keys(list).length>0) {
+            $('title').text("You have ("+Object.keys(list).length+") item/s on your ToDo List");
+          }
           for (var i = 0; i < Object.keys(list).length; i++) {
             Object.keys(list)[i]
             $('.todo').append(
@@ -139,6 +142,7 @@
           uniqid = Date.now();
           id=(uniqid/1231).toString().split(".")[1]+randChar(4);
           list[id]=i;
+          $('title').text("You have ("+Object.keys(list).length+") item/s on your ToDo List");
           if (storage) {localStorage.setItem("list",JSON.stringify(list));}
           $('#item').val("");
           $('.todo').append(
@@ -161,6 +165,12 @@
         delete list[$(this).closest('.list-item').attr('data-postid')];
         if (storage) {localStorage.setItem("list",JSON.stringify(list));}
         $(this).closest(".list-item").remove();
+        if (Object.keys(list).length>0) {
+          $('title').text("You have ("+Object.keys(list).length+") item/s on your ToDo List");
+        }
+        else {
+          $('title').text('ToDo List');
+        }
       })
     });
   </script>
