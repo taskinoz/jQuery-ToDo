@@ -54,11 +54,22 @@
     }
     .todo .list-item{
       list-style: circle;
-      display: list-item;
-      margin-left: 20px;
+      display: inline-block;
       padding: 5px 10px;
+      width: 80%;
+      margin-left: 10px;
     }
-    .list-item:nth-child(even){
+    .todo .list-item::before{
+      content: "\f111";
+      font-family: "Font Awesome 5 Free";
+      /* margin-right: 10px; */
+      font-size: 14px;
+      vertical-align: middle;
+      margin: -7px;
+      position: relative;
+      left: -20px;
+    }
+    .list-item:nth-child(2n){
       background: #eee;
     }
     .list-item .close{
@@ -86,8 +97,10 @@
     input[type=text]{
       background: none;
       border: 0;
+      border-radius: 0;
       border-bottom: 1px solid #ccc;
       padding: 10px;
+      font-size: 20px;
       width: calc(100% - 10px * 2);
     }
     input[type=button]{
@@ -101,9 +114,17 @@
       -moz-appearance: none;
       -webkit-appearance: none;
     }
+    @media screen and (max-width:900px) {
+      .close{
+        position: absolute;
+      }
+    }
     .close{
       display: inline-block;
       cursor: pointer;
+      text-align: right;
+      width: 10%;
+      vertical-align: middle;
     }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -120,7 +141,7 @@
             Object.keys(list)[i]
             $('.todo').append(
               '<div class="list-item" data-postid="'+Object.keys(list)[i]+'">'+list[(Object.keys(list)[i])]+
-              ' <div class="close"><i class="fas fa-times"></i></div></div>'
+              '</div><div class="close"><i class="fas fa-times"></i></div>'
             );
           }
         }
@@ -150,7 +171,7 @@
           $('#item').val("");
           $('.todo').append(
             '<div class="list-item" data-postid="'+id+'">'+i+
-            ' <div class="close"><i class="fas fa-times"></i></div></div>'
+            '</div><div class="close"><i class="fas fa-times"></i></div>'
           );
         }
         else {
@@ -165,9 +186,10 @@
 
       $(document).on('click','.close',function () {
         //console.log("test");
-        delete list[$(this).closest('.list-item').attr('data-postid')];
+        delete list[$(this).prev('.list-item').attr('data-postid')];
         if (storage) {localStorage.setItem("list",JSON.stringify(list));}
-        $(this).closest(".list-item").remove();
+        $(this).prev(".list-item").remove();
+        $(this).remove()
         if (Object.keys(list).length>0) {
           $('title').text("You have ("+Object.keys(list).length+") item/s on your ToDo List");
         }

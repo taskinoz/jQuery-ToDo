@@ -16,6 +16,5 @@ I wanted to experiment with creating editing and storing data objects, and using
 
 ## ToDo
 - Add sharing via base64 encoded object
-- Fix Webkit styling
-- Fix mobile overflow errors with long tasks
+
 (Yes, it is in my ToDo list)
