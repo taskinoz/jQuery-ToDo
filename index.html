@@ -103,7 +103,9 @@
       font-size: 20px;
       width: calc(100% - 10px * 2);
     }
-    input[type=button]{
+    input[type=button],
+    #share{
+      width: 50%;
       color: #fff;
       background: #75b7ef;
       padding: 10px 20px;
@@ -113,6 +115,10 @@
       text-align: center;
       -moz-appearance: none;
       -webkit-appearance: none;
+      display: inline-block;
+    }
+    #share{
+      width: 45%;
     }
     @media screen and (max-width:900px) {
       .close{
@@ -131,7 +137,21 @@
   <script>
     $(document).ready(function(){
       var storage = false;
-      if (typeof(Storage) !== "undefined") {
+      var url = window.location.hash;
+      if (url) {
+        list = JSON.parse(atob(url.split("#")[1]));
+        if (Object.keys(list).length>0) {
+          $('title').text("You have ("+Object.keys(list).length+") item/s on your ToDo List");
+        }
+        for (var i = 0; i < Object.keys(list).length; i++) {
+          Object.keys(list)[i]
+          $('.todo').append(
+            '<div class="list-item" data-postid="'+Object.keys(list)[i]+'">'+list[(Object.keys(list)[i])]+
+            '</div><div class="close"><i class="fas fa-times"></i></div>'
+          );
+        }
+      }
+      else if (typeof(Storage) !== "undefined") {
         if (localStorage.list!=undefined){
           list = JSON.parse(localStorage.getItem("list"));
           if (Object.keys(list).length>0) {
@@ -149,7 +169,8 @@
           var list = {};
         }
         storage = true;
-      } else {
+      }
+      else {
         // No Local Storage
         var list = {};
       }
@@ -197,6 +218,11 @@
           $('title').text('ToDo List');
         }
       })
+
+      $("#share").on('click',function () {
+        window.location.href = "#"+btoa(JSON.stringify(list));
+        // Add copy to clipboard
+      });
     });
   </script>
 </head>
@@ -207,6 +233,7 @@
     <div class="add">
       <input id="item" type="text" name="item">
       <input id="add" type="button" value="Add">
+      <div id="share">Share</div>
     </div>
   </div>
 </body>
