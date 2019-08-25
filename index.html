@@ -149,7 +149,7 @@
         for (var i = 0; i < Object.keys(a).length; i++) {
           Object.keys(a)[i]
           $('.todo').append(
-            '<div class="list-item" data-postid="'+Object.keys(a)[i]+'">'+a[(Object.keys(a)[i])]+
+            '<div class="list-item" data-postid="'+Object.keys(a)[i]+'">'+(a[(Object.keys(a)[i])]).replace(/(\b)(on\S+)(\s*)=|javascript|(<\s*)(\/*)script/ig,"")+
             '</div><div class="close"><i class="fas fa-times"></i></div>'
           );
         }
@@ -186,6 +186,8 @@
       }
       $('#add').on('click', function(){
         i=$('#item').val();
+        // Remove XSS
+        i=i.replace(/(\b)(on\S+)(\s*)=|javascript|(<\s*)(\/*)script/ig,"");
         if (i!="") {
           uniqid = Date.now();
           id=(uniqid/1231).toString().split(".")[1]+randChar(4);
