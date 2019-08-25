@@ -90,6 +90,9 @@
       width: 100%;
       padding: 50px 0;
     }
+    .add{
+      text-align: center;
+    }
     input{
       width: 100%;
       margin: 10px 0;
@@ -105,7 +108,7 @@
     }
     input[type=button],
     #share{
-      width: 50%;
+      width: 49%;
       color: #fff;
       background: #75b7ef;
       padding: 10px 20px;
@@ -117,12 +120,15 @@
       -webkit-appearance: none;
       display: inline-block;
     }
-    #share{
-      width: 45%;
-    }
     @media screen and (max-width:900px) {
       .close{
         position: absolute;
+      }
+    }
+    @media screen and (max-width:767px){
+      input[type=button],
+      #share{
+        width: 100%;
       }
     }
     .close{
@@ -230,7 +236,7 @@
     <div class="add">
       <input id="item" type="text" name="item">
       <input id="add" type="button" value="Add">
-      <div id="share">Share</div>
+      <button id="share">Share</button>
     </div>
   </div>
 </body>
